@@ -33,4 +33,16 @@ public class DocServiceImpl implements DocService {
 		return docMapper.insertDoc(doc);
 	}
 
+	@Override
+	public Doc getDoc(int doc_id) {
+		
+		return docMapper.getDoc(doc_id);
+	}
+
+	@Override
+	public int updateDoc(Doc doc) {
+
+		return docMapper.updateDoc(doc);
+	}
+
 }

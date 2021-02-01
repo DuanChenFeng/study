@@ -100,7 +100,7 @@
 								<a href="<%=basePath%>/study/video/video-manager">视频库管理</a>
 							</dd>
 							<dd>
-								<a href="<%=basePath%>/movie/video/video-online">在线视频</a>
+								<a href="<%=basePath%>/study/video/video-online">在线视频</a>
 							</dd>
 						</dl>
 					</li>
@@ -114,7 +114,7 @@
 								<a href="<%=basePath%>/study/doc/doc-manager">文档库管理</a>
 							</dd>
 							<dd>
-								<a href="<%=basePath%>/movie/doc/doc-edit">在线文档</a>
+								<a href="<%=basePath%>/study/doc/doc-edit">在线文档</a>
 							</dd>
 						</dl>
 					</li>
@@ -127,17 +127,7 @@
  			<div style="background-size:cover;padding: 15px;" ALIGN="center">
     				<br>
     			<!-- 查询部分 -->
-				<div class="layui-row">
-					<div class="layui-col-md5">
-						<form class="layui-form" method="get" action="<%=basePath %>/movie/info">
-							<div class="layui-col-md10">
-								<input type="text" id="title" value="${title}" name="title" 
-								placeholder="请输入查询的电影名" class="layui-input"/>
-							</div>
-							<button type="submit" class="layui-btn layui-btn-normal">查询</button>
-						</form>
-					</div>
-			 	</div>
+				
     				<br>
     				<br>
     				<h1>欢迎进入电影票房预测系统首页</h1>

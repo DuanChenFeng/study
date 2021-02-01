@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ddb.mapper.VideoMapper">
+
+	<resultMap type="com.ddb.entity.Video" id="VideoMap">
+	
+	</resultMap>
+	
+	<!-- 展示所有doc文件-->
+	<select id="getAllVideo" resultMap="VideoMap" parameterType="java.lang.String">
+		select video_id,video_name,dir_path,upload_time,update_time
+		from video_info
+		where video_name like #{video_name} and status=1
+	</select>
+	
+	<!-- 上传文件doc信息 -->
+	<insert id="insertVideo" parameterType="com.ddb.entity.Video">
+		insert into video_info(video_name,user_id,dir_path) 
+		values(#{video_name}, #{user_id}, #{dir_path})
+	</insert>
+	
+	<!-- 根据id查找文件-->
+	<select id="getVideo" resultMap="VideoMap" parameterType="java.lang.Integer">
+		select video_id,video_name,dir_path,upload_time,update_time
+		from video_info
+		where video_id=#{video_id} and status=1
+	</select>
+	
+	<!-- 根据id更新文件状态 -->
+	<update id="updateVideo" parameterType="com.ddb.entity.Video">
+		update video_info set
+		status=#{status} where video_id=#{video_id}
+	</update>
+	
+</mapper> 

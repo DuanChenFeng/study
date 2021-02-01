@@ -16,5 +16,11 @@ public interface DocService {
 	
 	//上传文件的文件信息
 	int insertDoc(Doc doc);
+	
+	//根据id查找对应文件
+	Doc getDoc(int doc_id);
+	
+	//根据id更新文件的状态
+	int updateDoc(Doc doc);
 
 }

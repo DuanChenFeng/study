@@ -98,7 +98,7 @@
 								<a href="<%=basePath%>/study/video/video-manager">视频库管理</a>
 							</dd>
 							<dd>
-								<a href="<%=basePath%>/movie/video/video-online">在线视频</a>
+								<a href="<%=basePath%>/study/video/video-online">在线视频</a>
 							</dd>
 						</dl>
 					</li>
@@ -112,7 +112,7 @@
 								<a href="<%=basePath%>/study/doc/doc-manager">文档库管理</a>
 							</dd>
 							<dd>
-								<a href="<%=basePath%>/movie/doc/doc-edit">在线文档</a>
+								<a href="<%=basePath%>/study/doc/doc-edit">在线文档</a>
 							</dd>
 						</dl>
 					</li>
@@ -122,61 +122,56 @@
 		<div class="layui-body" style="background:#D1EEEE; color:#DC143C">
 	    	<!-- 内容主体区域 -->
  			<div style="background-size:cover;padding: 15px;" ALIGN="center">
-    				<br>
     			<!-- 查询部分 -->
 				<div class="layui-row">
 					<div class="layui-col-md5">
-						<form class="layui-form" method="get" action="<%=basePath %>/study/doc">
+						<form class="layui-form" method="get" action="<%=basePath %>/study/doc/doc-info">
 							<div class="layui-col-md10">
-								<input type="text" id="all_doc" name="all_doc" 
+								<input type="text" id="name" value="${name}" name="name" 
 								placeholder="请输入查询的文档名" class="layui-input"/>
 							</div>
 							<button type="submit" class="layui-btn layui-btn-normal">查询</button>
 						</form>
 					</div>
 			 	</div>
+			 	<br>
 			 	<div class="layui-row">
 			 		<div class="layui-col-md5">
 			 			<div class="layui-col-md10">
 							<form class="form-horizontal" enctype="multipart/form-data" id="upload-doc">
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="请选择文件" /> 
+									<input type="text" class="layui-input" placeholder="请选择文件" disabled/> 
 									<span class="input-group-btn"> 
-										<label for="forexIO_file" class="form-control btn btn-info"> 选择文件</label> 
+										<label for="forexIO_file" class="layui-btn layui-btn-normal"> 选择文件</label> 
 										<input id="forexIO_file" type="file" name="files" onchange="set_placeholder(this)" style="display: none"/>
 									</span>
+									<button type="button" class="layui-btn layui-btn-normal" onclick="upload_doc()">上传</button>
 								</div>
-								<button type="button" class="form-control btn btn-info" 
-								onclick="upload_doc()">上传</button>
 							</form>
 						</div>
 					</div>
 				</div>
-				
 				<!-- 查询结果表格显示 -->
 				<table class="layui-table">
 					<thead>
 						<tr>
 							<th>文档库ID</th>
 							<th>文档名</th>
-							<th>上传时间</th>
+							<th>文档路径</th>
 							<th>更新时间</th>
 							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${all_doc}" var="emp">
+						<c:forEach items="${all_doc}" var="doc">
 						  <tr>
-							<td>${emp.doc_id}</td>
-							<td>${emp.doc_name}</td>
-							<td>${emp.upload_time}</td>
-							<td>${emp.update_time}</td>
+							<td>${doc.doc_id}</td>
+							<td>${doc.doc_name}</td>
+							<td>${doc.dir_path}</td>
+							<td>${doc.update_time}</td>
 							<td>
-								<a href="index#" class="layui-btn" 
-									onclick="delEmployee(${emp.doc_id})">删除</a>
-								<a href="index#" class="layui-btn" 
-									data-toggle="modal" 
-									data-target="#editEmpDialog" onclick="selectById(${emp.doc_id})">修改</a>
+								<a href="doc-info#" class="layui-btn" onclick="selectByPath(${doc.doc_id})">下载</a>
+								<a href="doc-info#" class="layui-btn" onclick="delDoc(${doc.doc_id})">删除</a>
 							</td>
 						  </tr>
 						</c:forEach>
@@ -196,7 +191,8 @@
 	<script src="<%=basePath %>/static/bootstrap.min.js"></script>
 	<!-- layui Core JavaScript -->
 	<script src="<%=basePath %>/static/layui.all.js"></script>
-	
+	<!-- wangEditor Core JavaScript -->
+	<script src="<%=basePath %>/static/wangEditor.min.js"></script>
 	<script type="text/javascript">
 		/* 下拉框的js */
 		layui.use('element', function(){
@@ -215,7 +211,7 @@
 		function upload_doc() {
 			$.ajax({
 				type: "POST",
-				url: "doc/upload",
+				url: "upload",
 				data: new FormData($('#upload-doc')[0]),
 				async: false,
 				processData: false,
@@ -239,6 +235,33 @@
 				}
 			});
 		}
+		
+		/* 下载文档   */
+		function selectByPath(path) {
+    		layer.confirm('确定要下载选中的文档？', {
+        		btn : [ '确定', '取消' ]
+    		}, function(index) {
+        		window.open("/study/doc/download?doc_id="+path)
+        		layer.close(layer.index);
+    		})
+		}
+		
+		/* 删除文档信息 */
+		function delDoc(id) {
+			if(confirm('确实要删除该文件吗?')) {
+				$.post("deleteById",{"id":id},
+				function(data){
+					if(data == "OK"){
+						alert("文档删除成功！");
+						window.location.reload();
+					}else{
+						alert("文档删除信息失败！");
+						window.location.reload();
+					}
+				});
+			}
+		}
+		
 	</script>
 
 </body>

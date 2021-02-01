@@ -1,4 +1,4 @@
-package com.ddb.interceptor;
+/*package com.ddb.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +53,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 			}
 		}
 		
-		// 不符合条件的给出提示信息，并转发到登录页�?
+		// 不符合条件的给出提示信息，并转发到登录页
 		request.setAttribute("msg", "您还没有登录，请先登录！");
 		request.getRequestDispatcher("/pages/login.jsp").forward(request, response);
 		
@@ -73,4 +73,4 @@ public class LoginInterceptor implements HandlerInterceptor{
 //		log.info("LoginInterceptor......afterCompletion");
 	}
 
-}
+}*/

@@ -100,7 +100,7 @@
 								<a href="<%=basePath%>/study/video/video-manager">视频库管理</a>
 							</dd>
 							<dd>
-								<a href="<%=basePath%>/movie/video/video-online">在线视频</a>
+								<a href="<%=basePath%>/study/video/video-online">在线视频</a>
 							</dd>
 						</dl>
 					</li>
@@ -114,7 +114,7 @@
 								<a href="<%=basePath%>/study/doc/doc-manager">文档库管理</a>
 							</dd>
 							<dd>
-								<a href="<%=basePath%>/movie/doc/doc-edit">在线文档</a>
+								<a href="<%=basePath%>/study/doc/doc-edit">在线文档</a>
 							</dd>
 						</dl>
 					</li>
