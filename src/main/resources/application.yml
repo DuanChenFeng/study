@@ -19,3 +19,9 @@ spring:
    file-size-threshold: 0
    max-file-size: 100MB
    max-request-size: 1000MB
+jodconverter:
+  local:
+    enabled: true
+    office-home: C:\Program Files (x86)\OpenOffice 4
+    max-tasks-per-process: 10
+    port-numbers: 8100

@@ -37,8 +37,8 @@
 		    <ul class="layui-nav layui-layout-right">
 		      	<li class="layui-nav-item">
 		        	<a href="javascript:;">
-		          		<img src="<%=basePath %>/static/images/face/10.gif" class="layui-nav-img">
-		          		${USER_SESSION.name}
+		          		<i class="glyphicon glyphicon-user" style="font-size:150%" aria-hidden="true"></i>
+		          		<span class="admin-name" style="font-size:150%">${USER_SESSION.name}</span>
 		        	</a>
 		        	<dl class="layui-nav-child">
 		          		<dd><a href="<%=basePath %>/study/user?name=${USER_SESSION.name}">基本资料</a></dd>
@@ -119,7 +119,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="layui-body" style="background:#D1EEEE; color:#DC143C">
+		<div class="layui-body" style="background:#D1EEEE;">
 	    	<!-- 内容主体区域 -->
  			<div style="background-size:cover;padding: 15px;" ALIGN="center">
     			<!-- 查询部分 -->
@@ -140,10 +140,11 @@
 			 			<div class="layui-col-md10">
 							<form class="form-horizontal" enctype="multipart/form-data" id="upload-video">
 								<div class="input-group">
-									<input type="text" class="layui-input" placeholder="请选择文件" disabled/> 
+									<input type="text" class="layui-input" placeholder="请选择视频文件" disabled/> 
 									<span class="input-group-btn"> 
 										<label for="forexIO_file" class="layui-btn layui-btn-normal"> 选择文件</label> 
-										<input id="forexIO_file" type="file" name="files" onchange="set_placeholder(this)" style="display: none"/>
+										<input id="forexIO_file" type="file" name="files"
+											accept=".mp4" onchange="set_placeholder(this)" style="display: none"/>
 									</span>
 									<button type="button" class="layui-btn layui-btn-normal" onclick="upload_video()">上传</button>
 								</div>
@@ -200,12 +201,19 @@
 		  
 		});
 		function set_placeholder(e) {
-	        var filename = $(e).val();
-	        if (filename) {
-	            var idx = filename.lastIndexOf("\\");
-	            filename = filename.substring(idx + 1);
-	            $(e).parent().prev().prop("placeholder", filename);
-	        }
+			var filename = $(e).val();
+	        var fileAccept = $("#forexIO_file").val().split(".");
+			var fileType = fileAccept[fileAccept.length-1]
+			if( fileType != "mp4"){
+				alert("只能上传mp4类型的视频！");
+				window.location.reload();
+			}else{
+		        if (filename) {
+		            var idx = filename.lastIndexOf("\\");
+		            filename = filename.substring(idx + 1);
+		            $(e).parent().prev().prop("placeholder", filename);
+		        }
+			}
 	    }
 		/* 上传视频  */
 		function upload_video() {

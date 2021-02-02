@@ -37,8 +37,8 @@
 		    <ul class="layui-nav layui-layout-right">
 		      	<li class="layui-nav-item">
 		        	<a href="javascript:;">
-		          		<img src="<%=basePath %>/static/images/face/10.gif" class="layui-nav-img">
-		          		${USER_SESSION.name}
+		          		<i class="glyphicon glyphicon-user" style="font-size:150%" aria-hidden="true"></i>
+		          		<span class="admin-name" style="font-size:150%">${USER_SESSION.name}</span>
 		        	</a>
 		        	<dl class="layui-nav-child">
 		          		<dd><a href="<%=basePath %>/study/user?name=${USER_SESSION.name}">基本资料</a></dd>
@@ -119,9 +119,9 @@
 				</ul>
 			</div>
 		</div>
-		<div class="layui-body" style="background:#D1EEEE; color:#DC143C">
+		<div class="layui-body" style="background:#D1EEEE;">
 	    	<!-- 内容主体区域 -->
- 			<div style="background-size:cover;padding: 15px;" ALIGN="center">
+ 			<div style="background-size:cover;padding: 15px;">
     			<!-- 查询部分 -->
 				<div class="layui-row">
 					<div class="layui-col-md5">
@@ -143,8 +143,13 @@
 									<input type="text" class="layui-input" placeholder="请选择文件" disabled/> 
 									<span class="input-group-btn"> 
 										<label for="forexIO_file" class="layui-btn layui-btn-normal"> 选择文件</label> 
-										<input id="forexIO_file" type="file" name="files" onchange="set_placeholder(this)" style="display: none"/>
+										<input id="forexIO_file" type="file" name="files" class="file-loading"
+											accept=".doc,.docx,.txt,.md,.pdf,.ppt,.xls,.xlsx,.csv" 
+											onchange="set_placeholder(this)" style="display: none"/>
 									</span>
+								</div>
+								<div>
+									<textarea class="form-control" rows="5" name="textarea" placeholder="请输入文件备注信息"></textarea>
 									<button type="button" class="layui-btn layui-btn-normal" onclick="upload_doc()">上传</button>
 								</div>
 							</form>
@@ -157,7 +162,7 @@
 						<tr>
 							<th>文档库ID</th>
 							<th>文档名</th>
-							<th>文档路径</th>
+							<th>文档备注信息</th>
 							<th>更新时间</th>
 							<th>操作</th>
 						</tr>
@@ -167,9 +172,10 @@
 						  <tr>
 							<td>${doc.doc_id}</td>
 							<td>${doc.doc_name}</td>
-							<td>${doc.dir_path}</td>
+							<td>${doc.doc_remark}</td>
 							<td>${doc.update_time}</td>
 							<td>
+								<a href="/study/doc/doc-preview?doc_id=${doc.doc_id}" class="layui-btn" target="_blank">在线打开</a>
 								<a href="doc-info#" class="layui-btn" onclick="selectByPath(${doc.doc_id})">下载</a>
 								<a href="doc-info#" class="layui-btn" onclick="delDoc(${doc.doc_id})">删除</a>
 							</td>
@@ -201,11 +207,20 @@
 		});
 		function set_placeholder(e) {
 	        var filename = $(e).val();
-	        if (filename) {
-	            var idx = filename.lastIndexOf("\\");
-	            filename = filename.substring(idx + 1);
-	            $(e).parent().prev().prop("placeholder", filename);
-	        }
+	        var fileAccept = $("#forexIO_file").val().split(".");
+			var fileType = fileAccept[fileAccept.length-1]
+			if( fileType != "doc" && fileType != "docx" && fileType != "txt" 
+					&& fileType != "md" && fileType != "pdf" && fileType != "ppt" 
+					&& fileType != "xls" && fileType != "xlsx" && fileType != "csv"){
+				alert("只能上传.doc,.docx,.txt,.md,.pdf,.ppt,.xls,.xlsx,.csv类型的文件！");
+				window.location.reload();
+			}else{
+		        if (filename) {
+		            var idx = filename.lastIndexOf("\\");
+		            filename = filename.substring(idx + 1);
+		            $(e).parent().prev().prop("placeholder", filename);
+		        }
+			}
 	    }
 		/* 上传文档  */
 		function upload_doc() {
@@ -226,7 +241,7 @@
 						alert("上传失败！");
 						window.location.reload();
 					}else {
-						alert("上传文件为空！");
+						alert("上传文件以及备注不能为空");
 						window.location.reload();
 					}
 				},

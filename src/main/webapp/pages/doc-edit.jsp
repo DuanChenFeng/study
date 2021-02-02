@@ -37,8 +37,8 @@
 		    <ul class="layui-nav layui-layout-right">
 		      	<li class="layui-nav-item">
 		        	<a href="javascript:;">
-		          		<img src="<%=basePath %>/static/images/face/10.gif" class="layui-nav-img">
-		          		${USER_SESSION.name}
+		          		<i class="glyphicon glyphicon-user" style="font-size:150%" aria-hidden="true"></i>
+		          		<span class="admin-name" style="font-size:150%">${USER_SESSION.name}</span>
 		        	</a>
 		        	<dl class="layui-nav-child">
 		          		<dd><a href="<%=basePath %>/study/user?name=${USER_SESSION.name}">基本资料</a></dd>
@@ -123,7 +123,7 @@
 	    	<!-- 内容主体区域 -->
 	    	<div style="background-size:cover;">
 				<div class="layui-row">
-					<div class="container">
+					<form class="form-horizontal" id="new_employee_form">
 						<div class="input-group mb-3" style="padding:15px">
 							<div class="input-group-prepend">
 								<span class="input-group-text">标题名称</span>
@@ -135,10 +135,10 @@
 						</div>
 						<br>
 						<p style="padding-left:15px">
-							<button class="btn btn-primary btn-lg" id="btnGenCode"
+							<button class="btn btn-primary btn-sm" id="btnGenCode"
 								role="button">保存 »</button>
 						</p>
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -198,6 +198,18 @@
         ];
         editor.create();
         editor.$textContainerElem.css('height', '350px !important');
+        
+        
+        
+        //获取标题
+        var title = document.getElementById("articleTitle").value;
+        console.log(title);
+        
+        function saveContent() {
+        	
+        	
+        }
+        
 	</script>
 
 </body>

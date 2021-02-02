@@ -40,8 +40,8 @@
 		    <ul class="layui-nav layui-layout-right">
 		      	<li class="layui-nav-item">
 		        	<a href="javascript:;" value="${login_user.name }">
-		          		<img src="<%=basePath %>/static/images/face/10.gif" class="layui-nav-img">
-		          		${USER_SESSION.name}
+		          		<i class="glyphicon glyphicon-user" style="font-size:150%" aria-hidden="true"></i>
+		          		<span class="admin-name" style="font-size:150%">${USER_SESSION.name}</span>
 		        	</a>
 		        	<dl class="layui-nav-child">
 		          		<dd><a href="<%=basePath %>/study/user?name=${USER_SESSION.name}">基本资料</a></dd>

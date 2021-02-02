@@ -15,6 +15,7 @@
 	<title>首页</title>
 	<link rel="stylesheet" href="<%=basePath %>/static/css/layui.css"  media="all">
 	<link rel="stylesheet" href="<%=basePath %>/static/css/bootstrap.min.css"  media="all">
+	<link rel="stylesheet" href="<%=basePath %>/static/css/nalika-icon.css"  media="all">
 </head>
 <body class="layui-layout-body">
 
@@ -23,7 +24,6 @@
 	    	<div class="layui-logo">
 	    		<img src="<%=basePath %>/static/images/logo_hj.png">
 	    	</div>
-	    
 		    <!-- 头部左侧区域（可配合layui已有的水平导航） -->
 		    <ul class="layui-nav layui-layout-left">
 				<li class="layui-nav-item"><a href="<%=basePath %>/study/index">首页</a></li>
@@ -40,8 +40,8 @@
 		    <ul class="layui-nav layui-layout-right">
 		      	<li class="layui-nav-item">
 		        	<a href="javascript:;">
-		          		<img src="<%=basePath %>/static/images/face/10.gif" class="layui-nav-img">
-		          		${USER_SESSION.name}
+		          		<i class="glyphicon glyphicon-user" style="font-size:150%" aria-hidden="true"></i>
+		          		<span class="admin-name" style="font-size:150%">${USER_SESSION.name}</span>
 		        	</a>
 		        	<dl class="layui-nav-child">
 		          		<dd><a href="<%=basePath %>/study/user?name=${USER_SESSION.name}">基本资料</a></dd>

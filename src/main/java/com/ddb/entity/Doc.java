@@ -13,6 +13,8 @@ public class Doc {
 	
 	private String doc_name;
 	
+	private String doc_remark;
+	
 	private int user_id;
 	
 	private String dir_path;
@@ -79,10 +81,19 @@ public class Doc {
 		this.update_time = update_time;
 	}
 
+	public String getDoc_remark() {
+		return doc_remark;
+	}
+
+	public void setDoc_remark(String doc_remark) {
+		this.doc_remark = doc_remark;
+	}
+
 	@Override
 	public String toString() {
-		return "Doc [doc_id=" + doc_id + ", doc_name=" + doc_name + ", use_id=" + user_id + ", dir_path=" + dir_path
-				+ ", status=" + status + ", upload_time=" + upload_time + ", update_time=" + update_time + "]";
+		return "Doc [doc_id=" + doc_id + ", doc_name=" + doc_name + ", doc_remark=" + doc_remark + ", user_id="
+				+ user_id + ", dir_path=" + dir_path + ", status=" + status + ", upload_time=" + upload_time
+				+ ", update_time=" + update_time + "]";
 	}
 	
 }

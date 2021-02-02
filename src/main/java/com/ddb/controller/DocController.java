@@ -5,15 +5,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.IOUtils;
+import org.jodconverter.DocumentConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,15 +60,15 @@ public class DocController {
 	
 	@RequestMapping("/doc/upload")
 	@ResponseBody
-	public int upload(MultipartFile files, HttpSession session){
+	public int upload(MultipartFile files, String textarea, HttpSession session){
 		Doc doc = new Doc();
-		
-		if (files.isEmpty() != true) {
+		if (files.isEmpty() != true && textarea.trim() != null && textarea.trim().length() != 0) {
 			// 获取文件名
 			String file_name = files.getOriginalFilename();
 			String realPath = session.getServletContext().getRealPath("upload/doc/");
 			doc.setDoc_name(file_name);
 			doc.setDir_path(realPath);
+			doc.setDoc_remark(textarea);
 			File f = new File(realPath, file_name);
 			try {
 				//保存文件
@@ -77,50 +82,47 @@ public class DocController {
 				return 0;
 			}
 		}else {
-			System.out.println("上传文件为空！");
+			System.out.println("上传文件或者备注为空！");
 			return -1;
 		}
 	}
 	
 	@RequestMapping(value = "/doc/download", method = RequestMethod.GET)
-	@ResponseBody
-	public String download(HttpServletResponse response, Integer doc_id) throws UnsupportedEncodingException{
+	public void download(String openStyle, Integer doc_id, HttpServletResponse response) throws UnsupportedEncodingException{
 		
+		//获取打开方式
+        openStyle = openStyle == null ? "attachment" : "inline";
+        System.out.println(openStyle);
+        
 		Doc doc = docService.getDoc(doc_id);
 		
 		String file = doc.getDir_path() + "\\" + doc.getDoc_name();
 		
-		System.out.println(file);
 		
 		File f = new File(file);
-		System.out.println(f.getName());
 		
 		if (f.exists()) {
-			// 配置文件下载
+			/*// 配置文件下载
             response.setHeader("content-type", "application/octet-stream");
-            response.setContentType("application/octet-stream");
+            response.setContentType("application/octet-stream");*/
             // 下载文件能正常显示中文
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(f.getName(), "UTF-8"));
+            response.setHeader("content-disposition", openStyle + ";filename=" + URLEncoder.encode(f.getName(), "UTF-8"));
             // 实现文件下载
             byte[] buffer = new byte[1024];
             FileInputStream fis = null;
             BufferedInputStream bis = null;
             try {
                 fis = new FileInputStream(f);
-                System.out.println(fis);
                 bis = new BufferedInputStream(fis);
                 OutputStream os = response.getOutputStream();
                 int i = bis.read(buffer);
-                System.out.println(i);
                 while (i != -1) {
                     os.write(buffer, 0, i);
                     os.flush();
                     i = bis.read(buffer);
                 }
-                return "OK";
             } catch (Exception e) {
                 System.out.println("Download the song failed!");
-                return "ERROR";
             } finally {
                 if (bis != null) {
                     try {
@@ -138,8 +140,6 @@ public class DocController {
                 }
             }
 		}
-		return "";
-		
 	}
 	
 	@RequestMapping("doc/deleteById")
@@ -189,5 +189,40 @@ public class DocController {
  
 		return imgInfo;
 	}
+	
+	@Autowired
+    private DocumentConverter converter;  //用于转换
+ 
+    @ResponseBody
+    @RequestMapping("doc/doc-preview")
+    public void toPdfFile(HttpServletResponse response, Integer doc_id) {
+    	Doc doc = docService.getDoc(doc_id);
+    	String f = doc.getDir_path() + "\\" + doc.getDoc_name();
+    	
+    	
+        File file = new File(f);//需要转换的文件
+        try {
+            File newFile = new File("C:/tmp");//转换之后文件生成的地址
+            if (!newFile.exists()) {
+                newFile.mkdirs();
+            }
+            String savePath="C:/tmp/"; //pdf文件生成保存的路径
+            String fileName="JCccc"+UUID.randomUUID().toString().replaceAll("-","").substring(0,6);
+            String fileType=".pdf"; //pdf文件后缀
+            String newFileMix=savePath+fileName+fileType;  //将这三个拼接起来,就是我们最后生成文件保存的完整访问路径了
+ 
+            //文件转化
+            converter.convert(file).to(new File(newFileMix)).execute();
+            //使用response,将pdf文件以流的方式发送的前端浏览器上
+            ServletOutputStream outputStream = response.getOutputStream();
+            InputStream in = new FileInputStream(new File(newFileMix));// 读取文件
+            int i = IOUtils.copy(in, outputStream);   // copy流数据,i为字节数
+            in.close();
+            outputStream.close();
+            System.out.println("流已关闭,可预览,该文件字节大小："+i);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	
 }

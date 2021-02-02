@@ -9,20 +9,20 @@
 	
 	<!-- 展示所有doc文件-->
 	<select id="getAllDoc" resultMap="DocMap" parameterType="java.lang.String">
-		select doc_id,doc_name,dir_path,upload_time,update_time
+		select doc_id,doc_name,doc_remark,dir_path,upload_time,update_time
 		from doc_info
 		where doc_name like #{doc_name} and status=1
 	</select>
 	
 	<!-- 上传文件doc信息 -->
 	<insert id="insertDoc" parameterType="com.ddb.entity.Doc">
-		insert into doc_info(doc_name,user_id,dir_path) 
-		values(#{doc_name}, #{user_id}, #{dir_path})
+		insert into doc_info(doc_name,doc_remark,user_id,dir_path) 
+		values(#{doc_name}, #{doc_remark}, #{user_id}, #{dir_path})
 	</insert>
 	
 	<!-- 根据id查找文件-->
 	<select id="getDoc" resultMap="DocMap" parameterType="java.lang.Integer">
-		select doc_id,doc_name,dir_path,upload_time,update_time
+		select doc_id,doc_name,doc_remark,dir_path,upload_time,update_time
 		from doc_info
 		where doc_id=#{doc_id} and status=1
 	</select>
