@@ -14,46 +14,60 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ddb.entity.Video;
-import com.ddb.service.VideoService;
+import com.ddb.entity.Software;
+import com.ddb.service.SoftwareService;
 
 /**
  * @author 段道博
- * @date 2021年1月19日下午3:34:17
+ * @date 2021年2月2日下午3:34:17
  *
  */
 
 @Controller
 @RequestMapping("/study")
-public class VideoController {
+public class SoftwareController {
 	
 	@Autowired
-	private VideoService videoService;
+	private SoftwareService softwareService;
 	
-	@RequestMapping("/video/video-info")
-	public String video(String name, Model model) {
-		if (name == null) {
+	@RequestMapping("/software/software-info")
+	public String software() {
+		return "software";
+	}
+	
+	@RequestMapping("/software/software.data")
+	@ResponseBody
+	public List<Software> getData(@RequestParam(value = "page", required = false) Integer page, 
+			@RequestParam(value = "limit", required = false) Integer limit,
+				@RequestParam(value = "name", required = false) String name) {
+		// 定义传入的页值
+		int pages = 0;
+		System.out.println(page + limit + name);
+		if (page.equals("")) {
+			pages = 0;
+		}else {
+			pages = (page - 1) * limit;
+		}
+		if (name == null || name.length() == 0) {
 			name = "%%";
 		}else {
 			name = "%" + name + "%";
 		}
+		List<Software> allSoftware = softwareService.getAllSoftware(pages, limit, name);
 		
-		List<Video> allVideo = videoService.getAllVideo(name);
-		
-		model.addAttribute("all_video", allVideo);
-		return "video";
+		return allSoftware;
 	}
 	
-	@RequestMapping("/video/upload")
+	@RequestMapping("/software/upload")
 	@ResponseBody
 	public int upload(MultipartFile files, String textarea, HttpSession session){
-		Video video = new Video();
+		Software software = new Software();
 		
 		if (files.isEmpty() != true && textarea.trim() != null && textarea.trim().length() != 0) {
 			// 获取文件名
@@ -64,14 +78,14 @@ public class VideoController {
 				System.out.println("文件夹不存在！");
 				file.getParentFile().mkdir();
 			}
-			video.setVideo_name(file_name);
-			video.setDir_path(realPath);
-			video.setVideo_remark(textarea);
+			software.setSoftware_name(file_name);
+			software.setDir_path(realPath);
+			software.setSoftware_remark(textarea);
 			File f = new File(realPath, file_name);
 			try {
 				//保存文件
 				files.transferTo(f);
-				videoService.insertVideo(video);
+				softwareService.insertSoftware(software);
 				System.out.println("上传成功！");
 				return 1;
 			} catch (IOException e) {
@@ -85,13 +99,13 @@ public class VideoController {
 		}
 	}
 	
-	@RequestMapping(value = "/video/download", method = RequestMethod.GET)
+	@RequestMapping(value = "/software/download", method = RequestMethod.GET)
 	@ResponseBody
-	public String download(HttpServletResponse response, Integer video_id) throws UnsupportedEncodingException{
+	public String download(HttpServletResponse response, Integer software_id) throws UnsupportedEncodingException{
 		
-		Video video = videoService.getVideo(video_id);
+		Software software = softwareService.getSoftware(software_id);
 		
-		String file = video.getDir_path() + "\\" + video.getVideo_name();
+		String file = software.getDir_path() + "\\" + software.getSoftware_name();
 		
 		System.out.println(file);
 		
@@ -145,12 +159,13 @@ public class VideoController {
 		
 	}
 	
-	@RequestMapping("video/deleteById")
+	@RequestMapping("software/deleteById")
 	@ResponseBody
 	public String deleteVideo(Integer id) {
-		Video video = videoService.getVideo(id);
-		video.setStatus(0);
-		int res = videoService.updateVideo(video);
+		Software software = softwareService.getSoftware(id);
+		
+		software.setStatus(0);
+		int res = softwareService.updateSoftware(software);
 		
 		if (res == 1) {
 			return "OK";

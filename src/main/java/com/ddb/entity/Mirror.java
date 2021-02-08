@@ -4,16 +4,16 @@ import java.util.Date;
 
 /**
 *@author 段道博
-*@date 2021年1月25日下午5:06:09
+*@date 2021年2月2日下午5:41:41
 *
 */
-public class Video {
+public class Mirror {
 	
-	private int video_id;
+	private int mirror_id;
 	
-	private String video_name;
+	private String mirror_name;
 	
-	private String video_remark;
+	private String mirror_remark;
 	
 	private int user_id;
 	
@@ -24,23 +24,29 @@ public class Video {
 	private String dir_path;
 	
 	private int status;
-	
-	private int hits;
 
-	public int getVideo_id() {
-		return video_id;
+	public int getMirror_id() {
+		return mirror_id;
 	}
 
-	public void setVideo_id(int video_id) {
-		this.video_id = video_id;
+	public void setMirror_id(int mirror_id) {
+		this.mirror_id = mirror_id;
 	}
 
-	public String getVideo_name() {
-		return video_name;
+	public String getMirror_name() {
+		return mirror_name;
 	}
 
-	public void setVideo_name(String video_name) {
-		this.video_name = video_name;
+	public void setMirror_name(String mirror_name) {
+		this.mirror_name = mirror_name;
+	}
+
+	public String getMirror_remark() {
+		return mirror_remark;
+	}
+
+	public void setMirror_remark(String mirror_remark) {
+		this.mirror_remark = mirror_remark;
 	}
 
 	public int getUser_id() {
@@ -83,27 +89,11 @@ public class Video {
 		this.status = status;
 	}
 
-	public String getVideo_remark() {
-		return video_remark;
-	}
-
-	public void setVideo_remark(String video_remark) {
-		this.video_remark = video_remark;
-	}
-
-	public int getHits() {
-		return hits;
-	}
-
-	public void setHits(int hits) {
-		this.hits = hits;
-	}
-
 	@Override
 	public String toString() {
-		return "Video [video_id=" + video_id + ", video_name=" + video_name + ", video_remark=" + video_remark
+		return "Mirror [mirror_id=" + mirror_id + ", mirror_name=" + mirror_name + ", mirror_remark=" + mirror_remark
 				+ ", user_id=" + user_id + ", upload_time=" + upload_time + ", update_time=" + update_time
-				+ ", dir_path=" + dir_path + ", status=" + status + ", hits=" + hits + "]";
+				+ ", dir_path=" + dir_path + ", status=" + status + "]";
 	}
 	
 }

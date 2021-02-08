@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ddb.entity.Video;
-import com.ddb.service.VideoService;
+import com.ddb.entity.Mirror;
+import com.ddb.service.MirrorService;
 
 /**
  * @author 段道博
@@ -31,29 +31,29 @@ import com.ddb.service.VideoService;
 
 @Controller
 @RequestMapping("/study")
-public class VideoController {
+public class MirrorController {
 	
 	@Autowired
-	private VideoService videoService;
+	private MirrorService mirrorService;
 	
-	@RequestMapping("/video/video-info")
-	public String video(String name, Model model) {
+	@RequestMapping("/mirror/mirror-info")
+	public String mirror(String name, Model model) {
 		if (name == null) {
 			name = "%%";
 		}else {
 			name = "%" + name + "%";
 		}
 		
-		List<Video> allVideo = videoService.getAllVideo(name);
+		List<Mirror> allMirror = mirrorService.getAllMirror(name);
 		
-		model.addAttribute("all_video", allVideo);
-		return "video";
+		model.addAttribute("all_mirror", allMirror);
+		return "mirror";
 	}
 	
-	@RequestMapping("/video/upload")
+	@RequestMapping("/mirror/upload")
 	@ResponseBody
 	public int upload(MultipartFile files, String textarea, HttpSession session){
-		Video video = new Video();
+		Mirror mirror = new Mirror();
 		
 		if (files.isEmpty() != true && textarea.trim() != null && textarea.trim().length() != 0) {
 			// 获取文件名
@@ -64,14 +64,14 @@ public class VideoController {
 				System.out.println("文件夹不存在！");
 				file.getParentFile().mkdir();
 			}
-			video.setVideo_name(file_name);
-			video.setDir_path(realPath);
-			video.setVideo_remark(textarea);
+			mirror.setMirror_name(file_name);
+			mirror.setDir_path(realPath);
+			mirror.setMirror_remark(textarea);
 			File f = new File(realPath, file_name);
 			try {
 				//保存文件
 				files.transferTo(f);
-				videoService.insertVideo(video);
+				mirrorService.insertMirror(mirror);
 				System.out.println("上传成功！");
 				return 1;
 			} catch (IOException e) {
@@ -85,13 +85,12 @@ public class VideoController {
 		}
 	}
 	
-	@RequestMapping(value = "/video/download", method = RequestMethod.GET)
+	@RequestMapping(value = "/mirror/download", method = RequestMethod.GET)
 	@ResponseBody
-	public String download(HttpServletResponse response, Integer video_id) throws UnsupportedEncodingException{
+	public String download(HttpServletResponse response, Integer mirror_id) throws UnsupportedEncodingException{
 		
-		Video video = videoService.getVideo(video_id);
-		
-		String file = video.getDir_path() + "\\" + video.getVideo_name();
+		Mirror mirror = mirrorService.getMirror(mirror_id);
+		String file = mirror.getDir_path() + "\\" + mirror.getMirror_name();
 		
 		System.out.println(file);
 		
@@ -145,12 +144,13 @@ public class VideoController {
 		
 	}
 	
-	@RequestMapping("video/deleteById")
+	@RequestMapping("mirror/deleteById")
 	@ResponseBody
-	public String deleteVideo(Integer id) {
-		Video video = videoService.getVideo(id);
-		video.setStatus(0);
-		int res = videoService.updateVideo(video);
+	public String deleteMirror(Integer id) {
+		
+		Mirror mirror = mirrorService.getMirror(id);
+		mirror.setStatus(0);
+		int res = mirrorService.updateMirror(mirror);
 		
 		if (res == 1) {
 			return "OK";

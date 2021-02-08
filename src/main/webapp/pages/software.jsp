@@ -123,14 +123,15 @@
 	    	<!-- 内容主体区域 -->
  			<div style="background-size:cover;padding: 15px;">
     			<!-- 查询部分 -->
-				<div class="layui-row">
-					<div class="layui-col-md5">
-						<form class="layui-form" method="post" action="<%=basePath %>/study/video/video-info">
+				<div class="layui-row demoTable">
+					<div class="layui-col-md5" id="btn">
+						<form class="layui-form" method="post" action="">
 							<div class="layui-col-md10">
-								<input type="text" id="name" value="${name}" name="name" 
-								placeholder="请输入查询的文档名" class="layui-input"/>
+								<input type="text" id="demoReload" name="name" 
+								placeholder="请输入查询的软件包名" class="layui-input"/>
 							</div>
-							<button type="submit" class="layui-btn layui-btn-normal">查询</button>
+							<button type="button" class="layui-btn layui-btn-normal" 
+								lay-submit data-type="reload" lay-filter="data-search-btn">查询</button>
 						</form>
 					</div>
 			 	</div>
@@ -138,17 +139,17 @@
 			 	<div class="layui-row">
 			 		<div class="layui-col-md5">
 			 			<div class="layui-col-md10">
-							<form class="form-horizontal" enctype="multipart/form-data" id="upload-video">
+							<form class="form-horizontal" enctype="multipart/form-data" id="upload-software">
 								<div class="input-group">
-									<input type="text" class="layui-input" placeholder="请选择视频文件" disabled/> 
+									<input type="text" class="layui-input" placeholder="请选择上传的软件包" disabled/> 
 									<span class="input-group-btn"> 
 										<label for="forexIO_file" class="layui-btn layui-btn-normal"> 选择文件</label> 
 										<input id="forexIO_file" type="file" name="files"
-											accept=".mp4" onchange="set_placeholder(this)" style="display: none"/>
+											accept=".exe,.zip,.tar,.7z" onchange="set_placeholder(this)" style="display: none"/>
 									</span>
 								</div>
 								<div>
-									<textarea class="form-control" rows="5" name="textarea" placeholder="请输入视频备注信息"></textarea>
+									<textarea class="form-control" rows="5" name="textarea" placeholder="请输入软件备注信息"></textarea>
 									<button type="button" class="layui-btn layui-btn-normal" onclick="upload_video()">上传</button>
 								</div>
 							</form>
@@ -156,32 +157,8 @@
 					</div>
 				</div>
 				<!-- 查询结果表格显示 -->
-				<table class="layui-table" halign:"center">
-					<thead>
-						<tr>
-							<th>视频库ID</th>
-							<th>视频名</th>
-							<th>视频信息</th>
-							<th>更新时间</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${all_video}" var="video">
-						  <tr>
-							<td>${video.video_id}</td>
-							<td>${video.video_name}</td>
-							<td>${video.video_remark}</td>
-							<td>${video.update_time}</td>
-							<td>
-								<a href="<%=basePath %>/upload/video/${video.video_name}" class="layui-btn" target="_blank">播放</a>
-								<a href="video-info#" class="layui-btn" onclick="selectByPath(${video.video_id})">下载</a>
-								<a href="video-info#" class="layui-btn" onclick="delVideo(${video.video_id})">删除</a>
-							</td>
-						  </tr>
-						</c:forEach>
-					</tbody>
-				</table>
+				<!-- 查询结果表格显示 -->
+   				<table class="layui-hide" id="software" lay-filter="demo"></table>
 			</div>
 		</div>
 	  	<!-- 底部固定区域 -->
@@ -197,18 +174,102 @@
 	<!-- layui Core JavaScript -->
 	<script src="<%=basePath %>/static/layui.all.js"></script>
 	
+	<script type="text/html" id="bar">
+		<button class="layui-btn layui-btn-xs" lay-event="download">下载</button>
+ 		<button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+	</script>
+	
 	<script type="text/javascript">
 		/* 下拉框的js */
 		layui.use('element', function(){
 		  var element = layui.element;
 		  
 		});
+		
+		layui.use(['table', 'form'], function(){
+			  var $ = layui.jquery,table = layui.table,form = layui.form;
+			  
+			  //第一个实例
+			  table.render({
+			    elem: '#software'
+			    ,url: '/study/software/software.data' //数据接口
+			    ,parseData:function(res){
+			    	console.log(res);
+			    	return{
+			    		"code":0
+			    		,"msg":""
+			    		,"count":res.length
+			    		,"data":res
+			    	};
+			    }
+			  	,id: 'testReload'
+			  	,page: true //开启分页
+			    ,cols: [[ //表头
+			   		{title: '序号',templet: '#indexTpl'}
+			      ,{field: 'software_name', title: '软件名'}
+			      ,{field: 'software_remark', title: '软件信息'}
+			      ,{field: 'update_time', title: '更新时间'} 
+			      ,{field: 'right', title: '操作', toolbar: "#bar"} 
+			    ]]
+			  });
+			  
+			  //实现数据搜索
+			  var active = {
+        	    reload: function(){
+        	      var demoReload = $('#demoReload');	//得到搜索框里已输入的数据   	      
+        	      //执行重载
+        	      table.reload('testReload', {
+        	        page: {
+        	          curr: 1 //重新从第 1 页开始
+        	        }
+        	        ,where: {
+        	          name:  demoReload.val()		//在表格中进行搜索
+        	        }
+        	      });
+        	    }
+        	  };
+		        	  
+        	  $('#btn .layui-btn').on('click', function(){
+        	    var type = $(this).data('type');
+        	    active[type] ? active[type].call(this) : '';
+        	  });
+        	  
+        	  //监听工具条
+        	  table.on('tool(demo)', function(obj){
+        	    var data = obj.data;
+        	    console.log(data);
+        	    if(obj.event === 'download'){
+        	    	layer.confirm('确定要下载选中的软件？', {
+                		btn : [ '确定', '取消' ]
+            		}, function(index) {
+                		window.open("/study/software/download?software_id="+data.software_id)
+                		layer.close(layer.index);
+            		})
+        	    } else if(obj.event === 'del'){
+        	      layer.confirm('真的删除行么', function(index){
+        	    	  	$.post("deleteById",{"id": data.software_id},
+     	  				function(data){
+     	  					if(data == "OK"){
+     	  						alert("镜像删除成功！");
+     	  						window.location.reload();
+     	  					}else{
+     	  						alert("镜像删除失败！");
+     	  						window.location.reload();
+     	  					}
+     	  				});
+        	        layer.close(index);
+        	      });
+        	    }
+        	  });
+			  
+		});
+		
 		function set_placeholder(e) {
 			var filename = $(e).val();
 	        var fileAccept = $("#forexIO_file").val().split(".");
 			var fileType = fileAccept[fileAccept.length-1]
-			if( fileType != "mp4"){
-				alert("只能上传mp4类型的视频！");
+			if( fileType != "exe" &&  fileType != "zip" && fileType != "7z" && fileType != "tar"){
+				alert("只能上传exe、zip、7z、tar类型的文件！");
 				window.location.reload();
 			}else{
 		        if (filename) {
@@ -218,12 +279,12 @@
 		        }
 			}
 	    }
-		/* 上传视频  */
+		/* 上传软件  */
 		function upload_video() {
 			$.ajax({
 				type: "POST",
 				url: "upload",
-				data: new FormData($('#upload-video')[0]),
+				data: new FormData($('#upload-software')[0]),
 				async: false,
 				processData: false,
 			    contentType: false,
@@ -237,7 +298,7 @@
 						alert("上传失败！");
 						window.location.reload();
 					}else {
-						alert("上传视频以及备注信息不能为空！");
+						alert("上传软件以及备注信息不能为空！");
 						window.location.reload();
 					}
 				},
@@ -246,33 +307,10 @@
 				}
 			});
 		}
-		
-		/* 下载视频   */
-		function selectByPath(path) {
-    		layer.confirm('确定要下载选中的视频？', {
-        		btn : [ '确定', '取消' ]
-    		}, function(index) {
-        		window.open("/study/video/download?video_id="+path)
-        		layer.close(layer.index);
-    		})
-		}
-		
-		/* 删除视频信息 */
-		function delVideo(id) {
-			if(confirm('确实要删除该视频吗?')) {
-				$.post("deleteById",{"id":id},
-				function(data){
-					if(data == "OK"){
-						alert("视频删除成功！");
-						window.location.reload();
-					}else{
-						alert("视频删除失败！");
-						window.location.reload();
-					}
-				});
-			}
-		}
-		
+	</script>
+	
+	<script type="text/html" id="indexTpl">
+    	{{d.LAY_TABLE_INDEX+1}}
 	</script>
 
 </body>

@@ -4,16 +4,16 @@ import java.util.Date;
 
 /**
 *@author 段道博
-*@date 2021年1月25日下午5:06:09
+*@date 2021年2月2日下午4:39:46
 *
 */
-public class Video {
+public class Software {
 	
-	private int video_id;
+	private int software_id;
 	
-	private String video_name;
+	private String software_name;
 	
-	private String video_remark;
+	private String software_remark;
 	
 	private int user_id;
 	
@@ -24,23 +24,29 @@ public class Video {
 	private String dir_path;
 	
 	private int status;
-	
-	private int hits;
 
-	public int getVideo_id() {
-		return video_id;
+	public int getSoftware_id() {
+		return software_id;
 	}
 
-	public void setVideo_id(int video_id) {
-		this.video_id = video_id;
+	public void setSoftware_id(int software_id) {
+		this.software_id = software_id;
 	}
 
-	public String getVideo_name() {
-		return video_name;
+	public String getSoftware_name() {
+		return software_name;
 	}
 
-	public void setVideo_name(String video_name) {
-		this.video_name = video_name;
+	public void setSoftware_name(String software_name) {
+		this.software_name = software_name;
+	}
+
+	public String getSoftware_remark() {
+		return software_remark;
+	}
+
+	public void setSoftware_remark(String software_remark) {
+		this.software_remark = software_remark;
 	}
 
 	public int getUser_id() {
@@ -83,27 +89,11 @@ public class Video {
 		this.status = status;
 	}
 
-	public String getVideo_remark() {
-		return video_remark;
-	}
-
-	public void setVideo_remark(String video_remark) {
-		this.video_remark = video_remark;
-	}
-
-	public int getHits() {
-		return hits;
-	}
-
-	public void setHits(int hits) {
-		this.hits = hits;
-	}
-
 	@Override
 	public String toString() {
-		return "Video [video_id=" + video_id + ", video_name=" + video_name + ", video_remark=" + video_remark
-				+ ", user_id=" + user_id + ", upload_time=" + upload_time + ", update_time=" + update_time
-				+ ", dir_path=" + dir_path + ", status=" + status + ", hits=" + hits + "]";
+		return "Software [software_id=" + software_id + ", software_name=" + software_name + ", software_remark="
+				+ software_remark + ", user_id=" + user_id + ", upload_time=" + upload_time + ", update_time="
+				+ update_time + ", dir_path=" + dir_path + ", status=" + status + "]";
 	}
 	
 }

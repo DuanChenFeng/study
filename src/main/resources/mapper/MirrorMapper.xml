@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ddb.mapper.MirrorMapper">
+
+	<resultMap type="com.ddb.entity.Mirror" id="MirrorMap">
+	
+	</resultMap>
+	
+	<!-- 展示所有doc文件-->
+	<select id="getAllMirror" resultMap="MirrorMap" parameterType="java.lang.String">
+		select mirror_id,mirror_name,mirror_remark,upload_time,update_time
+		from mirror_info
+		where mirror_name like #{mirror_name} and status=1
+	</select>
+	
+	<!-- 上传文件doc信息 -->
+	<insert id="insertMirror" parameterType="com.ddb.entity.Mirror">
+		insert into mirror_info(mirror_name,mirror_remark,user_id,dir_path) 
+		values(#{mirror_name}, #{mirror_remark}, #{user_id}, #{dir_path})
+	</insert>
+	
+	<!-- 根据id查找文件-->
+	<select id="getMirror" resultMap="MirrorMap" parameterType="java.lang.Integer">
+		select mirror_id,mirror_name,mirror_remark,dir_path,upload_time,update_time
+		from mirror_info
+		where mirror_id=#{mirror_id} and status=1
+	</select>
+	
+	<!-- 根据id更新文件状态 -->
+	<update id="updateMirror" parameterType="com.ddb.entity.Mirror">
+		update mirror_info set
+		status=#{status} where mirror_id=#{mirror_id}
+	</update>
+	
+</mapper> 

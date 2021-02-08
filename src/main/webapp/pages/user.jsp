@@ -71,10 +71,10 @@
 						href="javascript:;">镜像库</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="<%=basePath%>/study/mirror/mirrot-info">镜像库信息概览</a>
+								<a href="<%=basePath%>/study/mirror/mirror-info">镜像库信息概览</a>
 							</dd>
 							<dd>
-								<a href="<%=basePath%>/study/mirror/mirror-manager">软件库管理</a>
+								<a href="<%=basePath%>/study/mirror/mirror-manager">镜像库管理</a>
 							</dd>
 						</dl>
 					</li>

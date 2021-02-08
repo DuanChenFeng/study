@@ -69,10 +69,10 @@
 						href="javascript:;">镜像库</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="<%=basePath%>/study/mirror/mirrot-info">镜像库信息概览</a>
+								<a href="<%=basePath%>/study/mirror/mirror-info">镜像库信息概览</a>
 							</dd>
 							<dd>
-								<a href="<%=basePath%>/study/mirror/mirror-manager">软件库管理</a>
+								<a href="<%=basePath%>/study/mirror/mirror-manager">镜像库管理</a>
 							</dd>
 						</dl>
 					</li>
@@ -125,7 +125,7 @@
     			<!-- 查询部分 -->
 				<div class="layui-row">
 					<div class="layui-col-md5">
-						<form class="layui-form" method="get" action="<%=basePath %>/study/doc/doc-info">
+						<form class="layui-form" method="post" action="<%=basePath %>/study/doc/doc-info">
 							<div class="layui-col-md10">
 								<input type="text" id="name" value="${name}" name="name" 
 								placeholder="请输入查询的文档名" class="layui-input"/>
@@ -175,7 +175,7 @@
 							<td>${doc.doc_remark}</td>
 							<td>${doc.update_time}</td>
 							<td>
-								<a href="/study/doc/doc-preview?doc_id=${doc.doc_id}" class="layui-btn" target="_blank">在线打开</a>
+								<a href="/study/doc/doc-preview?doc_id=${doc.doc_id}" class="layui-btn" target="_blank">预览</a>
 								<a href="doc-info#" class="layui-btn" onclick="selectByPath(${doc.doc_id})">下载</a>
 								<a href="doc-info#" class="layui-btn" onclick="delDoc(${doc.doc_id})">删除</a>
 							</td>

@@ -9,20 +9,20 @@
 	
 	<!-- 展示所有doc文件-->
 	<select id="getAllVideo" resultMap="VideoMap" parameterType="java.lang.String">
-		select video_id,video_name,dir_path,upload_time,update_time
+		select video_id,video_name,video_remark,upload_time,update_time
 		from video_info
 		where video_name like #{video_name} and status=1
 	</select>
 	
 	<!-- 上传文件doc信息 -->
 	<insert id="insertVideo" parameterType="com.ddb.entity.Video">
-		insert into video_info(video_name,user_id,dir_path) 
-		values(#{video_name}, #{user_id}, #{dir_path})
+		insert into video_info(video_name,video_remark,user_id,dir_path) 
+		values(#{video_name}, #{video_remark}, #{user_id}, #{dir_path})
 	</insert>
 	
 	<!-- 根据id查找文件-->
 	<select id="getVideo" resultMap="VideoMap" parameterType="java.lang.Integer">
-		select video_id,video_name,dir_path,upload_time,update_time
+		select video_id,video_name,video_remark,dir_path,upload_time,update_time
 		from video_info
 		where video_id=#{video_id} and status=1
 	</select>

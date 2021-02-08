@@ -125,10 +125,10 @@
     			<!-- 查询部分 -->
 				<div class="layui-row">
 					<div class="layui-col-md5">
-						<form class="layui-form" method="post" action="<%=basePath %>/study/video/video-info">
+						<form class="layui-form" method="get" action="<%=basePath %>/study/mirror/mirror-info">
 							<div class="layui-col-md10">
 								<input type="text" id="name" value="${name}" name="name" 
-								placeholder="请输入查询的文档名" class="layui-input"/>
+								placeholder="请输入查询的镜像名" class="layui-input"/>
 							</div>
 							<button type="submit" class="layui-btn layui-btn-normal">查询</button>
 						</form>
@@ -138,9 +138,9 @@
 			 	<div class="layui-row">
 			 		<div class="layui-col-md5">
 			 			<div class="layui-col-md10">
-							<form class="form-horizontal" enctype="multipart/form-data" id="upload-video">
+							<form class="form-horizontal" enctype="multipart/form-data" id="upload-mirror">
 								<div class="input-group">
-									<input type="text" class="layui-input" placeholder="请选择视频文件" disabled/> 
+									<input type="text" class="layui-input" placeholder="请选择镜像文件" disabled/> 
 									<span class="input-group-btn"> 
 										<label for="forexIO_file" class="layui-btn layui-btn-normal"> 选择文件</label> 
 										<input id="forexIO_file" type="file" name="files"
@@ -148,8 +148,8 @@
 									</span>
 								</div>
 								<div>
-									<textarea class="form-control" rows="5" name="textarea" placeholder="请输入视频备注信息"></textarea>
-									<button type="button" class="layui-btn layui-btn-normal" onclick="upload_video()">上传</button>
+									<textarea class="form-control" rows="5" name="textarea" placeholder="请输入镜像备注信息"></textarea>
+									<button type="button" class="layui-btn layui-btn-normal" onclick="upload_mirror()">上传</button>
 								</div>
 							</form>
 						</div>
@@ -159,24 +159,23 @@
 				<table class="layui-table" halign:"center">
 					<thead>
 						<tr>
-							<th>视频库ID</th>
-							<th>视频名</th>
-							<th>视频信息</th>
+							<th>镜像库ID</th>
+							<th>镜像名</th>
+							<th>镜像信息</th>
 							<th>更新时间</th>
 							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${all_video}" var="video">
+						<c:forEach items="${all_mirror}" var="mirror">
 						  <tr>
-							<td>${video.video_id}</td>
-							<td>${video.video_name}</td>
-							<td>${video.video_remark}</td>
-							<td>${video.update_time}</td>
+							<td>${mirror.mirror_id}</td>
+							<td>${mirror.mirror_name}</td>
+							<td>${mirror.mirror_remark}</td>
+							<td>${mirror.update_time}</td>
 							<td>
-								<a href="<%=basePath %>/upload/video/${video.video_name}" class="layui-btn" target="_blank">播放</a>
-								<a href="video-info#" class="layui-btn" onclick="selectByPath(${video.video_id})">下载</a>
-								<a href="video-info#" class="layui-btn" onclick="delVideo(${video.video_id})">删除</a>
+								<a href="mirror-info#" class="layui-btn" onclick="selectByPath(${mirror.mirror_id})">下载</a>
+								<a href="mirror-info#" class="layui-btn" onclick="delMirror(${mirror.mirror_id})">删除</a>
 							</td>
 						  </tr>
 						</c:forEach>
@@ -219,11 +218,11 @@
 			}
 	    }
 		/* 上传视频  */
-		function upload_video() {
+		function upload_mirror() {
 			$.ajax({
 				type: "POST",
 				url: "upload",
-				data: new FormData($('#upload-video')[0]),
+				data: new FormData($('#upload-mirror')[0]),
 				async: false,
 				processData: false,
 			    contentType: false,
@@ -237,7 +236,7 @@
 						alert("上传失败！");
 						window.location.reload();
 					}else {
-						alert("上传视频以及备注信息不能为空！");
+						alert("上传镜像以及备注信息不能为空！");
 						window.location.reload();
 					}
 				},
@@ -249,24 +248,24 @@
 		
 		/* 下载视频   */
 		function selectByPath(path) {
-    		layer.confirm('确定要下载选中的视频？', {
+    		layer.confirm('确定要下载选中的镜像？', {
         		btn : [ '确定', '取消' ]
     		}, function(index) {
-        		window.open("/study/video/download?video_id="+path)
+        		window.open("/study/mirror/download?mirror_id="+path)
         		layer.close(layer.index);
     		})
 		}
 		
-		/* 删除视频信息 */
-		function delVideo(id) {
-			if(confirm('确实要删除该视频吗?')) {
+		/* 删除镜像信息 */
+		function delMirror(id) {
+			if(confirm('确实要删除该镜像吗?')) {
 				$.post("deleteById",{"id":id},
 				function(data){
 					if(data == "OK"){
-						alert("视频删除成功！");
+						alert("镜像删除成功！");
 						window.location.reload();
 					}else{
-						alert("视频删除失败！");
+						alert("镜像删除失败！");
 						window.location.reload();
 					}
 				});
