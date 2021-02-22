@@ -24,6 +24,8 @@ public class Doc {
 	private Date upload_time;
 	
 	private Date update_time;
+	
+	private int hits;
 
 	public int getDoc_id() {
 		return doc_id;
@@ -89,11 +91,19 @@ public class Doc {
 		this.doc_remark = doc_remark;
 	}
 
+	public int getHits() {
+		return hits;
+	}
+
+	public void setHits(int hits) {
+		this.hits = hits;
+	}
+
 	@Override
 	public String toString() {
 		return "Doc [doc_id=" + doc_id + ", doc_name=" + doc_name + ", doc_remark=" + doc_remark + ", user_id="
 				+ user_id + ", dir_path=" + dir_path + ", status=" + status + ", upload_time=" + upload_time
-				+ ", update_time=" + update_time + "]";
+				+ ", update_time=" + update_time + ", hits=" + hits + "]";
 	}
 	
 }

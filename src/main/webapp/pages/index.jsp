@@ -24,9 +24,9 @@
 	.con span.span1{ display: block; width: 286px; height: 161px; margin:11.5px 0 0 11.5px;background: rgba(33,33,33,0.8); position: absolute; left: -100%; top: 0; color: #ccc;box-sizing: border-box; font-size: 14px; transition: all 0.5s ease;}
 	.con span.span2{ display: block; width: 225px; height: 125px; margin:11.5px 0 0 11.5px;background: rgba(33,33,33,0.8); position: absolute; left: -100%; top: 0; color: #ccc;box-sizing: border-box; font-size: 14px; transition: all 0.5s ease;}
 	.con p{padding-left: 10px;}
-	.con h4{text-align: center;margin-bottom: 20px;}
+	.con h4{text-align: center;margin-bottom: 10px;}
 	.con:hover span{ left: 0; top: 0; }
-	.con:hover h3{ left: 0; top: 0; }
+	.con:hover h4{ left: 0; top: 0; }
 	.con:hover p{ left: 0; top: 0; }
 	/*删格化5等份*/
 	.layui-col-lg2-4,.layui-col-md2-4,.layui-col-sm2-4,.layui-col-xs2-4{position:relative;display:block;box-sizing:border-box}
@@ -63,29 +63,34 @@
 				<li class="layui-nav-item"><a href="<%=basePath%>/study/index">首页</a></li>
 				<li class="layui-nav-item"><a
 					href="<%=basePath %>/study/user?name=${USER_SESSION.name}">用户</a></li>
-				<li class="layui-nav-item"><a href="javascript:;">其它系统</a>
+				<li class="layui-nav-item">
+					<a href="javascript:;">其它系统</a>
 					<dl class="layui-nav-child">
 						<dd>
 							<a href="<%=basePath%>/study/manager">权限管理</a>
 						</dd>
-					</dl></li>
+					</dl>
+				</li>
 			</ul>
 
 			<!-- 头部右侧区域 -->
 			<ul class="layui-nav layui-layout-right">
-				<li class="layui-nav-item"><a href="javascript:;"> <i
-						class="glyphicon glyphicon-user" style="font-size: 150%"
-						aria-hidden="true"></i> <span class="admin-name"
-						style="font-size: 150%">${USER_SESSION.name}</span>
-				</a>
+				<li class="layui-nav-item">
+					<a href="javascript:;" value="${login_user.name }"> 
+						管理员
+					</a>
 					<dl class="layui-nav-child">
 						<dd>
-							<a href="<%=basePath %>/study/user?name=${USER_SESSION.name}">基本资料</a>
+							<a href="<%=basePath %>/study/user?name=${USER_SESSION.name}">
+								基本资料
+							</a>
 						</dd>
-					</dl></li>
+					</dl>
+				</li>
 				<li class="layui-nav-item"><a href="<%=basePath%>/logout">注销</a></li>
 			</ul>
 		</div>
+		
 		<!-- 视频轮播 -->
 		<div style="display: flex; justify-content: center; align-items: center; margin-top: 10px; height: 360px;">
 			<!-- 内容主体区域 -->
@@ -137,34 +142,34 @@
 				<div class="layui-row layui-col-space25">
 					<div class="layui-col-xs3 con">
 						<img alt="视频一" src="<%=basePath%>/static/images/video/video1.jpg">
-						<span class="span1">
-							<h4>视频名称</h4>
-							<p><b>视频描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-							<p><b>点击量:</b>xx</p>
+						<span class="span1" onclick="playVideo(video_info(0).video_id)">
+							<h4 id="video_h1"></h4>
+							<p id="video_p_desc_1"></p>
+							<p id="video_p_hits_1"></p>
 						</span>
 					</div>
 					<div class="layui-col-xs3 con">
 						<img alt="视频二" src="<%=basePath%>/static/images/video/video2.jpg">	
-						<span class="span1">
-							<h4>视频名称</h4>
-							<p><b>视频描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-							<p><b>点击量:</b>xx</p>
+						<span class="span1" onclick="playVideo(video_info(1).video_id)">
+							<h4 id="video_h2">视频名称</h4>
+							<p id="video_p_desc_2"></p>
+							<p id="video_p_hits_2"></p>
 						</span>
 					</div>
 					<div class="layui-col-xs3 con">
 						<img alt="视频三" src="<%=basePath%>/static/images/video/video3.jpg">	
-						<span class="span1">
-							<h4>视频名称</h4>
-							<p><b>视频描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-							<p><b>点击量:</b>xx</p>
+						<span class="span1" onclick="playVideo(video_info(2).video_id)">
+							<h4 id="video_h3">视频名称</h4>
+							<p id="video_p_desc_3"></p>
+							<p id="video_p_hits_3"></p>
 						</span>
 					</div>
 					<div class="layui-col-xs3 con">
 						<img alt="视频四" src="<%=basePath%>/static/images/video/video4.jpg">	
-						<span class="span1">
-							<h4>视频名称</h4>
-							<p><b>视频描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-							<p><b>点击量:</b>xx</p>
+						<span class="span1" onclick="playVideo(video_info(3).video_id)">
+							<h4 id="video_h4">视频名称</h4>
+							<p id="video_p_desc_4"></p>
+							<p id="video_p_hits_4"></p>
 						</span>
 					</div>
 				</div>
@@ -194,42 +199,42 @@
 						<div class="layui-row layui-col-space25">
 							<div class="layui-col-xs2-4 con">
 								<img alt="文档一" src="<%=basePath%>/static/images/doc/p_l/1.png">
-								<span class="span2">
-									<h4>视频名称</h4>
-									<p><b>视频描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-									<p><b>点击量:</b>xx</p>
+								<span class="span2" onclick="previewDoc(doc_info(0).doc_id)">
+									<h4 id="doc_h1"></h4>
+									<p id="doc_p_desc_1"></p>
+									<p id="doc_p_hits_1"></p>
 								</span>
 							</div>
 							<div class="layui-col-xs2-4 con">
 								<img alt="文档二" src="<%=basePath%>/static/images/doc/p_l/2.jpg">	
-								<span class="span2">
-									<h4>文档名称</h4>
-									<p><b>文档描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-									<p><b>点击量:</b>xx</p>
+								<span class="span2" onclick="previewDoc(doc_info(1).doc_id)">
+									<h4 id="doc_h2"></h4>
+									<p id="doc_p_desc_2"></p>
+									<p id="doc_p_hits_2"></p>
 								</span>
 							</div>
 							<div class="layui-col-xs2-4 con">
 								<img alt="视频三" src="<%=basePath%>/static/images/doc/p_l/3.webp">	
-								<span class="span2">
-									<h4>文档名称</h4>
-									<p><b>文档描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-									<p><b>点击量:</b>xx</p>
+								<span class="span2" onclick="previewDoc(doc_info(2).doc_id)">
+									<h4 id="doc_h3"></h4>
+									<p id="doc_p_desc_3"></p>
+									<p id="doc_p_hits_3"></p>
 								</span>
 							</div>
 							<div class="layui-col-xs2-4 con">
 								<img alt="文档四" src="<%=basePath%>/static/images/doc/p_l/4.webp">	
-								<span class="span2">
-									<h4>文档名称</h4>
-									<p><b>文档描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-									<p><b>点击量:</b>xx</p>
+								<span class="span2" onclick="previewDoc(doc_info(3).doc_id)">
+									<h4 id="doc_h4"></h4>
+									<p id="doc_p_desc_4"></p>
+									<p id="doc_p_hits_4"></p>
 								</span>
 							</div>
 							<div class="layui-col-xs2-4 con">
 								<img alt="文档五" src="<%=basePath%>/static/images/doc/p_l/5.jpg">	
-								<span class="span2">
-									<h4>文档名称</h4>
-									<p><b>文档描述:</b>蠢萌蠢萌可爱的网红表情包熊本熊在线官方高清壁纸</p>
-									<p><b>点击量:</b>xx</p>
+								<span class="span2" onclick="previewDoc(doc_info(4).doc_id)">
+									<h4 id="doc_h5"></h4>
+									<p id="doc_p_desc_5"></p>
+									<p id="doc_p_hits_5"></p>
 								</span>
 							</div>
 						</div>
@@ -489,6 +494,10 @@
 	<script src="<%=basePath%>/static/bootstrap.min.js"></script>
 	<!-- layui Core JavaScript -->
 	<script src="<%=basePath%>/static/layui.all.js"></script>
+	<!-- 首页展示排名前四视频的js code -->
+	<script src="<%=basePath%>/static/ddb/index/video.js"></script>
+	<!-- 首页展示排名前五文档的js code -->
+	<script src="<%=basePath%>/static/ddb/index/doc.js"></script>
 
 	<script type="text/javascript">
 		/* 下拉框的js */

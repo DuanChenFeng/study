@@ -1,4 +1,4 @@
-/*package com.ddb.interceptor;
+package com.ddb.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 			throws Exception {
 		//获取请求的url
 		String url = request.getRequestURI();		
-		//URL：除了login.jsp是可以公开访问的，其它的URL都进行拦截
+
 		if (url.indexOf("/login") >= 0) {
 			return true;
 		}		
@@ -73,4 +73,4 @@ public class LoginInterceptor implements HandlerInterceptor{
 //		log.info("LoginInterceptor......afterCompletion");
 	}
 
-}*/
+}

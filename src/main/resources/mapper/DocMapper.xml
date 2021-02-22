@@ -9,9 +9,17 @@
 	
 	<!-- 展示所有doc文件-->
 	<select id="getAllDoc" resultMap="DocMap" parameterType="java.lang.String">
-		select doc_id,doc_name,doc_remark,dir_path,upload_time,update_time
+		select doc_id,doc_name,doc_remark,dir_path,upload_time,update_time,hits
 		from doc_info
 		where doc_name like #{doc_name} and status=1
+	</select>
+	
+	<!-- 展示点击量排名前四的文件信息-->
+	<select id="getDocFourth" resultMap="DocMap">
+		select doc_id,doc_name,doc_remark,dir_path,upload_time,update_time,hits
+		from doc_info
+		order by hits desc
+		limit 5
 	</select>
 	
 	<!-- 上传文件doc信息 -->
@@ -22,7 +30,7 @@
 	
 	<!-- 根据id查找文件-->
 	<select id="getDoc" resultMap="DocMap" parameterType="java.lang.Integer">
-		select doc_id,doc_name,doc_remark,dir_path,upload_time,update_time
+		select doc_id,doc_name,doc_remark,dir_path,upload_time,update_time,hits
 		from doc_info
 		where doc_id=#{doc_id} and status=1
 	</select>
@@ -31,6 +39,12 @@
 	<update id="updateDoc" parameterType="com.ddb.entity.Doc">
 		update doc_info set
 		status=#{status} where doc_id=#{doc_id}
+	</update>
+	
+	<!-- 根据id更新视频点击量 -->
+	<update id="updateHits" parameterType="com.ddb.entity.Doc">
+		update doc_info set
+		hits=#{hits} where doc_id=#{doc_id}
 	</update>
 	
 </mapper> 

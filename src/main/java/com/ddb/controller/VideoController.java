@@ -36,6 +36,7 @@ public class VideoController {
 	@Autowired
 	private VideoService videoService;
 	
+	/*视频信息展示*/
 	@RequestMapping("/video/video-info")
 	public String video(String name, Model model) {
 		if (name == null) {
@@ -50,6 +51,7 @@ public class VideoController {
 		return "video";
 	}
 	
+	/*上传视频*/
 	@RequestMapping("/video/upload")
 	@ResponseBody
 	public int upload(MultipartFile files, String textarea, HttpSession session){
@@ -65,7 +67,7 @@ public class VideoController {
 				file.getParentFile().mkdir();
 			}
 			video.setVideo_name(file_name);
-			video.setDir_path(realPath);
+			video.setDir_path("upload/video");
 			video.setVideo_remark(textarea);
 			File f = new File(realPath, file_name);
 			try {
@@ -85,6 +87,7 @@ public class VideoController {
 		}
 	}
 	
+	/*下载视频*/
 	@RequestMapping(value = "/video/download", method = RequestMethod.GET)
 	@ResponseBody
 	public String download(HttpServletResponse response, Integer video_id) throws UnsupportedEncodingException{
@@ -145,6 +148,7 @@ public class VideoController {
 		
 	}
 	
+	/*删除视频*/
 	@RequestMapping("video/deleteById")
 	@ResponseBody
 	public String deleteVideo(Integer id) {
@@ -157,8 +161,40 @@ public class VideoController {
 		}else {
 			return "ERROR";
 		}
-		
 	}
-	
+
+	/*视频播放*/
+	@RequestMapping("video/play")
+	@ResponseBody
+	public Video playVideo(Integer id) {
+		Video video = videoService.getVideo(id);
+		System.out.println(video.getHits());
+		
+		int hits = video.getHits() +1;
+		video.setHits(hits);
+		
+		System.out.println(video.getHits());
+		int res = videoService.updateHits(video);
+		
+		if (res == 1) {
+			return video;
+		}else {
+			return null;
+		}
+	}
+
+	/*获取视频播放量排名前四的视频信息*/
+	@RequestMapping("video/video-fourth-info")
+	@ResponseBody
+	public List<Video> video_fourth() {
+		
+		List<Video> videoFourth = videoService.getVideoFourth();
+		
+		for(Video v : videoFourth) {
+			v.setVideo_name(v.getVideo_name().replace(".mp4", ""));
+		}
+		
+		return videoFourth;
+	}
 	
 }

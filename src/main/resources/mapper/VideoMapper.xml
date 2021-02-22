@@ -7,30 +7,44 @@
 	
 	</resultMap>
 	
-	<!-- 展示所有doc文件-->
+	<!-- 展示所有video文件-->
 	<select id="getAllVideo" resultMap="VideoMap" parameterType="java.lang.String">
-		select video_id,video_name,video_remark,upload_time,update_time
+		select video_id,video_name,video_remark,upload_time,update_time,hits
 		from video_info
 		where video_name like #{video_name} and status=1
 	</select>
 	
-	<!-- 上传文件doc信息 -->
+	<!-- 展示点击量排名前四的视频信息-->
+	<select id="getVideoFourth" resultMap="VideoMap">
+		select video_id,video_name,video_remark,upload_time,update_time,hits
+		from video_info
+		order by hits desc
+		limit 4
+	</select>
+	
+	<!-- 上传文件video信息 -->
 	<insert id="insertVideo" parameterType="com.ddb.entity.Video">
 		insert into video_info(video_name,video_remark,user_id,dir_path) 
 		values(#{video_name}, #{video_remark}, #{user_id}, #{dir_path})
 	</insert>
 	
-	<!-- 根据id查找文件-->
+	<!-- 根据id查找视频-->
 	<select id="getVideo" resultMap="VideoMap" parameterType="java.lang.Integer">
-		select video_id,video_name,video_remark,dir_path,upload_time,update_time
+		select video_id,video_name,video_remark,dir_path,upload_time,update_time,hits
 		from video_info
 		where video_id=#{video_id} and status=1
 	</select>
 	
-	<!-- 根据id更新文件状态 -->
+	<!-- 根据id更新视频状态 -->
 	<update id="updateVideo" parameterType="com.ddb.entity.Video">
 		update video_info set
 		status=#{status} where video_id=#{video_id}
+	</update>
+	
+	<!-- 根据id更新视频点击量 -->
+	<update id="updateHits" parameterType="com.ddb.entity.Video">
+		update video_info set
+		hits=#{hits} where video_id=#{video_id}
 	</update>
 	
 </mapper> 

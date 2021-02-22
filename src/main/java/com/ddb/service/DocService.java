@@ -14,6 +14,9 @@ public interface DocService {
 	//所有文件
 	List<Doc> getAllDoc(String name);
 	
+	//点击量排名前四的文件
+	List<Doc> getDocFourth();
+	
 	//上传文件的文件信息
 	int insertDoc(Doc doc);
 	
@@ -23,4 +26,6 @@ public interface DocService {
 	//根据id更新文件的状态
 	int updateDoc(Doc doc);
 
+	//根据id更新文件的点击量
+	int updateHits(Doc doc);
 }

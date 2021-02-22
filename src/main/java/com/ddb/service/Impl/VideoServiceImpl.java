@@ -29,20 +29,36 @@ public class VideoServiceImpl implements VideoService{
 
 	@Override
 	public int insertVideo(Video video) {
-		// TODO Auto-generated method stub
+		
 		return videoMapper.insertVideo(video);
 	}
 
 	@Override
 	public Video getVideo(int video_id) {
-		// TODO Auto-generated method stub
+		
 		return videoMapper.getVideo(video_id);
 	}
 
 	@Override
 	public int updateVideo(Video video) {
-		// TODO Auto-generated method stub
+		
 		return videoMapper.updateVideo(video);
+	}
+
+	@Override
+	public int updateHits(Video video) {
+		
+		int res = videoMapper.updateHits(video);
+		
+		return res;
+	}
+
+	@Override
+	public List<Video> getVideoFourth() {
+
+		List<Video> videoFourth = videoMapper.getVideoFourth();
+		
+		return videoFourth;
 	}
 
 }

@@ -18,6 +18,9 @@ public interface VideoMapper {
 	//所有视频
 	List<Video> getAllVideo(String video_name);
 	
+	//点击量排名前四的视频
+	List<Video> getVideoFourth();
+	
 	//上传文件的视频信息
 	int insertVideo(Video video);
 	
@@ -26,5 +29,8 @@ public interface VideoMapper {
 	
 	//根据id更新视频的状态
 	int updateVideo(Video video);
+	
+	//根据id更新视频的点击量
+	int updateHits(Video video);
 
 }

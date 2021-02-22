@@ -9,11 +9,6 @@ import com.ddb.entity.Doc;
 import com.ddb.mapper.DocMapper;
 import com.ddb.service.DocService;
 
-/**
-*@author 段道博
-*@date 2021年1月20日下午6:03:16
-*
-*/
 
 @Service
 public class DocServiceImpl implements DocService {
@@ -43,6 +38,21 @@ public class DocServiceImpl implements DocService {
 	public int updateDoc(Doc doc) {
 
 		return docMapper.updateDoc(doc);
+	}
+
+	@Override
+	public int updateHits(Doc doc) {
+		
+		int res = docMapper.updateHits(doc);
+		return res;
+	}
+
+	@Override
+	public List<Doc> getDocFourth() {
+
+		List<Doc> docFourth = docMapper.getDocFourth();
+		
+		return docFourth;
 	}
 
 }

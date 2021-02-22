@@ -44,6 +44,7 @@ public class DocController {
 	@Autowired
 	private DocService docService;
 	
+	/*文档信息列表*/
 	@RequestMapping("/doc/doc-info")
 	public String video(String name, Model model) {
 		if (name == null) {
@@ -58,6 +59,7 @@ public class DocController {
 		return "doc";
 	}
 	
+	/*上传文档*/
 	@RequestMapping("/doc/upload")
 	@ResponseBody
 	public int upload(MultipartFile files, String textarea, HttpSession session){
@@ -87,6 +89,7 @@ public class DocController {
 		}
 	}
 	
+	/*下载文档*/
 	@RequestMapping(value = "/doc/download", method = RequestMethod.GET)
 	public void download(String openStyle, Integer doc_id, HttpServletResponse response) throws UnsupportedEncodingException{
 		
@@ -102,9 +105,6 @@ public class DocController {
 		File f = new File(file);
 		
 		if (f.exists()) {
-			/*// 配置文件下载
-            response.setHeader("content-type", "application/octet-stream");
-            response.setContentType("application/octet-stream");*/
             // 下载文件能正常显示中文
             response.setHeader("content-disposition", openStyle + ";filename=" + URLEncoder.encode(f.getName(), "UTF-8"));
             // 实现文件下载
@@ -142,6 +142,7 @@ public class DocController {
 		}
 	}
 	
+	/*删除文档*/
 	@RequestMapping("doc/deleteById")
 	@ResponseBody
 	public String deleteDoc(Integer id) {
@@ -157,12 +158,14 @@ public class DocController {
 		
 	}
 	
+	/*文档编辑*/
 	@RequestMapping("doc/doc-edit")
 	public String docEdit(){
 		
 		return "doc-edit";
 	}
 	
+	/*文档内容保存*/
 	@RequestMapping("doc/doc-save")
 	@ResponseBody
 	public ImgInfo setImgUrl(MultipartFile file, HttpServletResponse response, HttpServletRequest request)
@@ -174,15 +177,20 @@ public class DocController {
 			imgFile.mkdirs();
 		}
 		String fileName = file.getOriginalFilename();// 文件名称
-		try (FileOutputStream fos = new FileOutputStream(new File(path + fileName))) {
+		
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(new File(path + fileName));
 			fos.write(bytes);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
- 
-		String value = "http://localhost:10080/upload/doc/image/" + fileName;
+		
+		String url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
+		
+		String value = url + "/upload/doc/image/" + fileName;
 		String[] values = { value };
- 
+		
 		ImgInfo imgInfo = new ImgInfo();
 		imgInfo.setError(0);
 		imgInfo.setUrl(values);
@@ -193,11 +201,16 @@ public class DocController {
 	@Autowired
     private DocumentConverter converter;  //用于转换
  
+	/*文档在线预览*/
     @ResponseBody
     @RequestMapping("doc/doc-preview")
     public void toPdfFile(HttpServletResponse response, Integer doc_id) {
     	Doc doc = docService.getDoc(doc_id);
     	String f = doc.getDir_path() + "\\" + doc.getDoc_name();
+    	
+    	//更新文档点击量
+    	doc.setHits(doc.getHits()+1);
+    	docService.updateHits(doc);
     	
     	
         File file = new File(f);//需要转换的文件
@@ -225,4 +238,22 @@ public class DocController {
         }
     }
 	
+    /*获取视频播放量排名前四的视频信息*/
+	@RequestMapping("doc/doc-fourth-info")
+	@ResponseBody
+	public List<Doc> doc_fourth() {
+		
+		List<Doc> docFourth = docService.getDocFourth();
+		
+		for(Doc doc : docFourth) {
+			
+			String[] split = doc.getDoc_name().split("\\.");
+			String type = split[split.length - 1];
+			
+			doc.setDoc_name(doc.getDoc_name().replace("." + type, ""));
+		}
+		
+		return docFourth;
+	}
+    
 }

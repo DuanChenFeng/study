@@ -174,7 +174,7 @@
 							<td>${video.video_remark}</td>
 							<td>${video.update_time}</td>
 							<td>
-								<a href="<%=basePath %>/upload/video/${video.video_name}" class="layui-btn" target="_blank">播放</a>
+								<a class="layui-btn" onclick="updateHits(${video.video_id})" target="_blank">播放</a>
 								<a href="video-info#" class="layui-btn" onclick="selectByPath(${video.video_id})">下载</a>
 								<a href="video-info#" class="layui-btn" onclick="delVideo(${video.video_id})">删除</a>
 							</td>
@@ -271,6 +271,18 @@
 					}
 				});
 			}
+		}
+		
+		/* 播放视频 */
+		function updateHits(id) {
+			$.ajax({
+		        type:"post",
+		        url:"play",
+		        data:{"id":id},
+		        success:function(data) {
+		        	window.open("/upload/video/" + data.video_name);
+		        }
+		    });
 		}
 		
 	</script>

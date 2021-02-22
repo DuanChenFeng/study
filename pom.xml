@@ -4,8 +4,8 @@
 	<groupId>com.ddb</groupId>
 	<artifactId>study</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
 	<dependencies>
-
 		<!-- 核心模块，包括自动配置支持，日志 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -97,12 +97,10 @@
             <artifactId>jodconverter-local</artifactId>
             <version>4.2.2</version>
         </dependency>
-
 	</dependencies>
 
-
 	<build>
-		<finalName>movie-analysis</finalName>
+		<finalName>study</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -141,19 +139,27 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>2.0.2.RELEASE</version>
-				<configuration>
-					<mainClass>com.ecjtu.Application</mainClass>
-					<encoding>UTF-8</encoding>
-				</configuration>
+				<!--这里写上main方法所在类的路径-->
+                <configuration>
+                    <mainClass>com.ddb.Application</mainClass>
+                </configuration>
 				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
 </project>
